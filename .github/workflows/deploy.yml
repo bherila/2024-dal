@@ -21,16 +21,6 @@ jobs:
           export PATH=/opt/cpanel/ea-php83/root/bin:$PATH
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
         
-      - name: Create .env file
-        run: |
-          echo "APP_KEY=base64:${{ secrets.APP_KEY }}" >> .env
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=${{ vars.DB_HOST }}" >> .env
-          echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
-          echo "DB_DATABASE=${{ vars.DB_DATABASE }}" >> .env
-          echo "DB_USERNAME=${{ vars.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-        
       - name: Prepare for cPanel
         run: mv public public_html
 

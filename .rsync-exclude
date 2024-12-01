@@ -4,6 +4,9 @@
 .env.example
 .git
 .github
+.myimunify_id
+.softaculous
+.lastlogin
 .ssh
 .trash
 error_log
