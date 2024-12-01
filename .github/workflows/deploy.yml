@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        
+      - name: Create .env file
+        run: |
+          cp .env.example .env
+          echo "APP_KEY=base64:${{ secrets.APP_KEY }}" >> .env
+        
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+        
+      - name: Deploy to Server
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: .
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+          exclude: |
+            /.git/
+            /.github/
+            /node_modules/
+            /storage/
+            /tests/
+            .env
+            .env.*
