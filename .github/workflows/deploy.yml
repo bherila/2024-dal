@@ -14,15 +14,22 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: |
+          export PATH=/opt/cpanel/ea-php83/root/bin:$PATH
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
         
       - name: Create .env file
         run: |
-          cp .env.example .env
           echo "APP_KEY=base64:${{ secrets.APP_KEY }}" >> .env
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=${{ vars.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
+          echo "DB_DATABASE=${{ vars.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ vars.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
         
       - name: Prepare for cPanel
         run: mv public public_html
@@ -35,17 +42,21 @@ jobs:
         with:
           switches: -avzr --delete --exclude-from='.rsync-exclude'
           path: .
-          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_path: ${{ secrets.DEPLOY_PATH }} # DEPLOY_PATH should end with trailing slash in GitHub secrets
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Run Database Migrations
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            cd ${{ secrets.DEPLOY_PATH }}
-            php artisan migrate --force
+      # - name: Run Database Migrations
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.DEPLOY_HOST }}
+      #     username: ${{ secrets.DEPLOY_USER }}
+      #     key: ${{ secrets.DEPLOY_KEY }}
+      #     script: |
+      #       export PATH=/opt/cpanel/ea-php83/root/bin:$PATH
+      #       cd ${{ secrets.DEPLOY_PATH }}
+      #       php -v
+      #       /opt/cpanel/ea-php83/root/bin/php -v
+      #       /opt/cpanel/ea-php83/root/bin/php /usr/local/bin/composer install --no-dev
+      #       /opt/cpanel/ea-php83/root/bin/php artisan migrate --force

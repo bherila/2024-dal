@@ -1,8 +1,12 @@
+.cpanel
 .cagefs
 .env
+.env.example
 .git
 .github
 .ssh
+.trash
+error_log
 logs
 lscache
 mail

@@ -1,0 +1,24 @@
+$TTL 14400
+
+; nameservers
+@       IN      A       154.29.71.35
+
+; mail
+@       IN      MX      0       @
+mail    IN      CNAME   @
+
+; aliases
+www     IN      CNAME   @
+ftp     IN      A       154.29.71.35
+whm     IN      A       154.29.71.35
+cpanel  IN      A       154.29.71.35
+cpcalendars IN  A       154.29.71.35
+webdisk IN      A       154.29.71.35
+webmail IN      A       154.29.71.35
+cpcontacts IN  A       154.29.71.35
+
+; spf
+@       IN      TXT     "v=spf1 +a +mx +ip4:154.29.71.35 include:relay.zumedns.com ~all"
+
+; dmarc
+_dmarc  IN      TXT     "v=DMARC1; p=none; "
