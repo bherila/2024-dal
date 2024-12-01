@@ -1,0 +1,15 @@
+.cagefs
+.env
+.git
+.github
+.ssh
+logs
+lscache
+mail
+node_modules
+public_ftp
+ssl
+storage
+tests
+tmp
+www
