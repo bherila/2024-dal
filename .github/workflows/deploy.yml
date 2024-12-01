@@ -41,19 +41,19 @@ jobs:
           remote_key: ${{ secrets.DEPLOY_KEY }}
           exclude: |
             .env
-            /.cagefs/
-            /.git/
-            /.github/
-            /logs/
-            /lscache/
-            /mail/
-            /node_modules/
-            /public_ftp/
-            /ssl/
-            /storage/
-            /tests/
-            /tmp/
-            /www
+            .cagefs
+            .git
+            .github
+            logs
+            lscache
+            mail
+            node_modules
+            public_ftp
+            ssl
+            storage
+            tests
+            tmp
+            www
 
       - name: Run Database Migrations
         uses: appleboy/ssh-action@master
