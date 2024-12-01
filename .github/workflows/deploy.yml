@@ -40,17 +40,18 @@ jobs:
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
           exclude: |
+            .env
+            /.cagefs/
             /.git/
             /.github/
-            /node_modules/
-            /storage/
-            /tests/
-            .env
             /logs/
             /lscache/
             /mail/
+            /node_modules/
             /public_ftp/
             /ssl/
+            /storage/
+            /tests/
             /tmp/
             /www
 
