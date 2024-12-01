@@ -3,7 +3,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "format": "./vendor/bin/pint",
+        "format:check": "./vendor/bin/pint --test"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
